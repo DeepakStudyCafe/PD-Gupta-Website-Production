@@ -1,7 +1,6 @@
 // app/about/page.js
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { getSiteContent } from '@/lib/firestore';
 import { defaultContent } from '@/lib/defaultContent';
 import Image from 'next/image';
 import { Target, Eye, Award } from 'lucide-react';
@@ -13,13 +12,11 @@ export const metadata = {
   description: 'Learn about our experienced team, vision, and mission. Serving clients since 2010 with excellence in accounting and taxation.',
 };
 
-async function getAboutContent() {
-  const content = await getSiteContent('about');
-  return content || defaultContent.about;
-}
 
-export default async function AboutPage() {
-  const aboutContent = await getAboutContent();
+
+
+export default function AboutPage() {
+  const aboutContent = defaultContent.about;
 
   return (
     <>
@@ -30,10 +27,10 @@ export default async function AboutPage() {
         <div className="container-custom">
           <div className="max-w-5xl">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              {aboutContent.title || defaultContent.about.title}
+              {aboutContent.title}
             </h1>
             <p className="text-sm tracking-wide text-gray-200">
-              {aboutContent.description || defaultContent.about.description}
+              {aboutContent.description}
             </p>
           </div>
         </div>
@@ -49,7 +46,7 @@ export default async function AboutPage() {
               </div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Our Vision</h2>
               <p className="text-gray-700 leading-relaxed">
-                {aboutContent.vision || defaultContent.about.vision}
+                {aboutContent.vision}
               </p>
             </div>
             
@@ -59,7 +56,7 @@ export default async function AboutPage() {
               </div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h2>
               <p className="text-gray-700 leading-relaxed">
-                {aboutContent.mission || defaultContent.about.mission}
+                {aboutContent.mission}
               </p>
             </div>
           </div>
@@ -77,7 +74,7 @@ export default async function AboutPage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {(aboutContent.team || defaultContent.about.team).map((member) => (
+            {aboutContent.team.map((member) => (
               <div key={member.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition">
                 <div className="relative h-64 bg-gradient-to-br from-primary-700 to-primary-900  flex items-center justify-center">
                   {member.image && (
