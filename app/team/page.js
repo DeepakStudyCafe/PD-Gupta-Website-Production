@@ -2,6 +2,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useRef, useState } from "react";
+import { FaLinkedin, FaSquareXTwitter } from "react-icons/fa6";
 
 export default function TeamPage() {
   const [expanded, setExpanded] = useState([]);
@@ -12,24 +13,32 @@ export default function TeamPage() {
       role: "Managing Partner",
       image: "Pratibha.jpeg",
       bio: "",
+      linkedin: "https://www.linkedin.com/in/pratibha-goyal-269b27186/",
+      x: "https://x.com/PratibhaGoyal",
     },
     {
-      name: "Pranjal Goyal",
+      name: "CA Pranjal Goyal",
       role: "Managing Partner",
       image: "PranjalGoyal.jpeg",
       bio: "",
+      linkedin: "#",
+      x: "#",
     },
     {
-      name: "Deepak Gupta",
+      name: "CA Deepak Gupta",
       role: "Manager",
       image: "DeepakGupta.jpeg",
       bio: "",
+      linkedin: "#",
+      x: "https://x.com/cadeepakgupta_",
     },
     {
-      name: "RAJA MEHTA",
+      name: "Raja Mehta",
       role: "Account Manager",
       image: "Raja.jpeg",
       bio: "",
+      linkedin: "https://www.linkedin.com/in/raja-mehta-91741a1a3/",
+      x: "#",
     },
 
     {
@@ -37,12 +46,16 @@ export default function TeamPage() {
       role: "Senior Accountant / Accounts Head",
       image: "/LuckKarn.jpeg",
       bio: "",
+      linkedin: "https://www.linkedin.com/in/lucy-karn-866a6a243/",
+      x: "#",
     },
     {
       name: "Jatin",
       role: "CA Article Trainee",
       image: "Jatin.jpeg",
       bio: "",
+      linkedin: "https://www.linkedin.com/in/jatin-kumar-3a449b254/",
+      x: "#",
     },
 
     {
@@ -50,12 +63,16 @@ export default function TeamPage() {
       role: "CA Article Trainee",
       image: "Deepesh.jpeg",
       bio: "",
+      linkedin: "https://www.linkedin.com/in/deepesh-mangla-82550b242/",
+      x: "#",
     },
     {
       name: "Sujal Negi",
       role: "Accountant",
       image: "sujalNegi.jpeg",
       bio: "",
+      linkedin: "https://www.linkedin.com/in/sujal-negi-8b52083a6/",
+      x: "#",
     },
   ];
 
@@ -167,12 +184,32 @@ export default function TeamPage() {
                       />
                     </div>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
                     {member.name}
                   </h3>
                   <p className="text-blue-600 font-medium mb-2">
                     {member.role}
                   </p>
+                  <div className="flex justify-center gap-3 mb-3">
+                    <a
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-50 hover:bg-blue-100 border border-blue-200 transition"
+                      aria-label="LinkedIn"
+                    >
+                      <FaLinkedin size={20} color="#0A66C2" />
+                    </a>
+                    <a
+                      href={member.x}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 hover:bg-gray-100 border border-gray-200 transition"
+                      aria-label="X"
+                    >
+                      <FaSquareXTwitter size={20} color="#111" />
+                    </a>
+                  </div>
                   <p className="text-gray-600 text-sm">
                     {expanded[index] ? (
                       <>

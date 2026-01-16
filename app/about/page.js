@@ -76,7 +76,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {aboutContent.team.map((member) => (
               <div key={member.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition">
-                <div className="relative h-64 bg-gradient-to-br from-primary-700 to-primary-900  flex items-center justify-center">
+                <div className="relative h-96 bg-gradient-to-br from-primary-700 to-primary-900  flex items-center justify-center">
                   {member.image && (
                       <Image
                         src={member.image}

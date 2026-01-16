@@ -47,6 +47,9 @@ const slides = [
 export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -64,7 +67,54 @@ export default function HeroCarousel() {
   // Form close karne ke liye
   const closeForm = () => {
     setIsFormOpen(false);
+    setSuccess("");
+    setError("");
+    setLoading(false);
   };
+
+  // Backend submit handler
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+    setSuccess("");
+    setError("");
+
+    const form = e.target;
+    const data = {
+      formType: "contact",
+      name: form.name?.value?.trim() || "",
+      email: form.email?.value?.trim() || "",
+      phone: form.phone?.value?.trim() || "",
+      message: form.message?.value?.trim() || "",
+    };
+
+    if (!data.name || !data.email || !data.phone) {
+      setError("Please fill all required fields.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/form-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      if (res.ok) {
+        setSuccess("Request submitted successfully!");
+        form.reset();
+        setTimeout(() => {
+          closeForm();
+        }, 1500);
+      } else {
+        setError(result.error || "Submission failed.");
+      }
+    } catch (err) {
+      setError("Network error. Please try again.");
+    }
+    setLoading(false);
+  }
 
   return (
     <>
@@ -127,7 +177,7 @@ export default function HeroCarousel() {
               Book a Consultation
             </h2>
 
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit} autoComplete="off">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                   Full Name
@@ -135,9 +185,11 @@ export default function HeroCarousel() {
                 <input
                   type="text"
                   id="name"
+                  name="name"
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Your name"
+                  disabled={loading}
                 />
               </div>
 
@@ -148,9 +200,11 @@ export default function HeroCarousel() {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="your@email.com"
+                  disabled={loading}
                 />
               </div>
 
@@ -161,9 +215,11 @@ export default function HeroCarousel() {
                 <input
                   type="tel"
                   id="phone"
+                  name="phone"
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                  placeholder="+91 __________"
+                  placeholder="+91 "
+                  disabled={loading}
                 />
               </div>
 
@@ -173,18 +229,24 @@ export default function HeroCarousel() {
                 </label>
                 <textarea
                   id="message"
+                  name="message"
                   rows={3}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Tell us how we can help..."
+                  disabled={loading}
                 />
               </div>
+
+              {error && <div className="text-red-600 text-center mb-2 text-sm">{error}</div>}
+              {success && <div className="text-green-600 text-center mb-2 text-sm">{success}</div>}
 
               <button
                 type="submit"
                 className="w-full py-3 font-semibold text-white rounded-lg bg-gradient-to-br from-green-500 to-green-900 
                            hover:from-green-600 hover:to-green-800 transition-all duration-300 shadow-md hover:shadow-lg"
+                disabled={loading}
               >
-                Submit Request
+                {loading ? "Submitting..." : "Submit Request"}
               </button>
             </form>
           </div>
