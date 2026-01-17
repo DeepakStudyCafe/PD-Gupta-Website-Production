@@ -19,7 +19,7 @@ const galleryImages = [
   { id: 7, src: "/g8.jpeg", alt: "Gallery Image 7" },
   { id: 8, src: "/g9.jpeg", alt: "Gallery Image 8" },
     { id: 1, src: "/g2.jpeg", alt: "Gallery Image 1" },
-  { id: 29, src: "/g29.jpg", alt: "Gallery Image 29" },
+  
   { id: 30, src: "/g30.jpeg", alt: "Gallery Image 30" },
   { id: 31, src: "/g31.jpeg", alt: "Gallery Image 31" },
   { id: 32, src: "/g32.jpeg", alt: "Gallery Image 32" },

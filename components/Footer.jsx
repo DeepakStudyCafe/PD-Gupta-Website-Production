@@ -1,14 +1,7 @@
 // components/Footer.jsx
 import Link from "next/link";
-import {
-  Facebook,
-  Twitter,
-  Linkedin,
-  Instagram,
-  Mail,
-  Phone,
-  MapPin,
-} from "lucide-react";
+import { FaFacebookF, FaXTwitter, FaLinkedinIn, FaInstagram, FaYoutube, FaTelegram } from "react-icons/fa6";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -136,52 +129,52 @@ export default function Footer() {
           </p>
           <div className="flex space-x-4">
             <a
-              href="https://www.facebook.com/Studycafe.in"
+              href="https://www.facebook.com/pdguptaco"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-white/10 p-2 rounded-full hover:bg-gold-500 transition"
             >
-              <Facebook size={18} />
+              <FaFacebookF size={18} />
             </a>
             <a
-              href="https://x.com/studycafe_in"
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-white/10 p-2 rounded-full hover:bg-gold-500 transition"
             >
-              <Twitter size={18} />
+              <FaXTwitter size={18} />
             </a>
             <a
-              href="https://www.linkedin.com/company/studycafe/?originalSubdomain=in"
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-white/10 p-2 rounded-full hover:bg-gold-500 transition"
             >
-              <Linkedin size={18} />
+              <FaLinkedinIn size={18} />
             </a>
             <a
-              href="https://www.instagram.com/studycafe.in/"
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-white/10 p-2 rounded-full hover:bg-gold-500 transition"
             >
-              <Instagram size={18} />
+              <FaInstagram size={18} />
             </a>
             <a
-              href="https://www.youtube.com/channel/UCQlf6kGtJ21wemVeTLA3T1g"
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-white/10 p-2 rounded-full hover:bg-gold-500 transition"
             >
-              <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.112-2.112C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.386.574A2.994 2.994 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a2.994 2.994 0 0 0 2.112 2.112C4.495 20.5 12 20.5 12 20.5s7.505 0 9.386-.574a2.994 2.994 0 0 0 2.112-2.112C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              <FaYoutube size={18} />
             </a>
             <a
-              href="https://t.me/studycafe_in"
+              href="#"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-white/10 p-2 rounded-full hover:bg-gold-500 transition"
             >
-              <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M9.036 16.569l-.398 5.601c.57 0 .816-.244 1.113-.54l2.664-2.537 5.522 4.033c1.012.557 1.729.264 1.98-.937l3.594-16.84c.327-1.513-.547-2.104-1.523-1.747L1.36 9.47c-1.487.575-1.47 1.4-.254 1.77l4.59 1.434 10.654-6.72c.5-.324.956-.144.581.18z"/></svg>
+              <FaTelegram size={18} />
             </a>
           </div>
         </div>

@@ -21,15 +21,15 @@ export default function TeamPage() {
       role: "Managing Partner",
       image: "PranjalGoyal.jpeg",
       bio: "",
-      linkedin: "#",
-      x: "#",
+      linkedin: "",
+      x: "",
     },
     {
       name: "CA Deepak Gupta",
       role: "Manager",
       image: "DeepakGupta.jpeg",
       bio: "",
-      linkedin: "#",
+      linkedin: "https://www.linkedin.com/in/ca-deepak-gupta-/",
       x: "https://x.com/cadeepakgupta_",
     },
     {
@@ -38,7 +38,7 @@ export default function TeamPage() {
       image: "Raja.jpeg",
       bio: "",
       linkedin: "https://www.linkedin.com/in/raja-mehta-91741a1a3/",
-      x: "#",
+      x: "",
     },
 
     {
@@ -47,7 +47,7 @@ export default function TeamPage() {
       image: "/LuckKarn.jpeg",
       bio: "",
       linkedin: "https://www.linkedin.com/in/lucy-karn-866a6a243/",
-      x: "#",
+      x: "",
     },
     {
       name: "Jatin",
@@ -55,7 +55,7 @@ export default function TeamPage() {
       image: "Jatin.jpeg",
       bio: "",
       linkedin: "https://www.linkedin.com/in/jatin-kumar-3a449b254/",
-      x: "#",
+      x: "",
     },
 
     {
@@ -64,7 +64,7 @@ export default function TeamPage() {
       image: "Deepesh.jpeg",
       bio: "",
       linkedin: "https://www.linkedin.com/in/deepesh-mangla-82550b242/",
-      x: "#",
+      x: "",
     },
     {
       name: "Sujal Negi",
@@ -72,7 +72,7 @@ export default function TeamPage() {
       image: "sujalNegi.jpeg",
       bio: "",
       linkedin: "https://www.linkedin.com/in/sujal-negi-8b52083a6/",
-      x: "#",
+      x: "",
     },
   ];
 
@@ -191,24 +191,28 @@ export default function TeamPage() {
                     {member.role}
                   </p>
                   <div className="flex justify-center gap-3 mb-3">
-                    <a
-                      href={member.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-50 hover:bg-blue-100 border border-blue-200 transition"
-                      aria-label="LinkedIn"
-                    >
-                      <FaLinkedin size={20} color="#0A66C2" />
-                    </a>
-                    <a
-                      href={member.x}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 hover:bg-gray-100 border border-gray-200 transition"
-                      aria-label="X"
-                    >
-                      <FaSquareXTwitter size={20} color="#111" />
-                    </a>
+                    {member.linkedin && (
+                      <a
+                        href={member.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-50 hover:bg-blue-100 border border-blue-200 transition"
+                        aria-label="LinkedIn"
+                      >
+                        <FaLinkedin size={20} color="#0A66C2" />
+                      </a>
+                    )}
+                    {member.x && (
+                      <a
+                        href={member.x}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 hover:bg-gray-100 border border-gray-200 transition"
+                        aria-label="X"
+                      >
+                        <FaSquareXTwitter size={20} color="#111" />
+                      </a>
+                    )}
                   </div>
                   <p className="text-gray-600 text-sm">
                     {expanded[index] ? (
