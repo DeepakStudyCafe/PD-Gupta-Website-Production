@@ -14,6 +14,10 @@ export default function Navbar() {
   const [loading, setLoading] = useState(false);
 
   const handleClick = () => {
+    if (pathname === "/") {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
   };
 
