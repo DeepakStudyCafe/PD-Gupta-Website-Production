@@ -4,43 +4,64 @@
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { submitContactForm } from '@/lib/firestore';
-import toast from 'react-hot-toast';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
-
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
-  });
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
+    setSuccess("");
+    setError("");
 
-    const result = await submitContactForm(formData);
-    
-    if (result.success) {
-      toast.success('Message sent successfully! We will get back to you soon.');
-      setFormData({ name: '', email: '', phone: '', message: '' });
-    } else {
-      toast.error('Failed to send message. Please try again.');
+    const form = e.target;
+    const data = {
+      formType: "contact",
+      name: form.name?.value?.trim() || "",
+      email: form.email?.value?.trim() || "",
+      phone: form.phone?.value?.trim() || "",
+      message: form.message?.value?.trim() || "",
+      // Add more fields here if you add more inputs
+    };
+
+
+
+    // Basic validation
+    if (!data.name || !data.email || !data.phone || !data.message) {
+      setError("Please fill all required fields.");
+      setLoading(false);
+      return;
     }
-    
-    setLoading(false);
-  };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    try {
+      const res = await fetch("/api/form-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      if (res.ok) {
+        setSuccess("Message sent successfully! We will get back to you soon.");
+        form.reset();
+      } else {
+        setError(result.error || "Failed to send message. Please try again.");
+      }
+    } catch (err) {
+      setError("Network error. Please try again.");
+    }
+    setLoading(false);
+  }
 
   return (
     <>
       <Navbar />
-      
+
+      {/* Success/Error messages (like query form) */}
+      {success && <div className="text-green-600 text-center mb-4">{success}</div>}
+      {error && <div className="text-red-600 text-center mb-4">{error}</div>}
+
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary-900 to-primary-700 text-white py-20 reveal">
         <div className="container-custom">
@@ -107,9 +128,14 @@ export default function ContactPage() {
             {/* Contact Form */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-xl shadow-md p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Send Us a Message</h3>
-                
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-bold text-gray-900">Send Us a Message</h3>
+                  {success && (
+                    <span className="text-green-600 text-sm ml-4 whitespace-nowrap">{success}</span>
+                  )}
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
                   <div>
                     <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
                       Full Name *
@@ -118,14 +144,11 @@ export default function ContactPage() {
                       type="text"
                       id="name"
                       name="name"
-                      value={formData.name}
-                      onChange={handleChange}
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition"
                       placeholder="Enter your full name"
                     />
                   </div>
-                  
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
@@ -135,30 +158,25 @@ export default function ContactPage() {
                         type="email"
                         id="email"
                         name="email"
-                        value={formData.email}
-                        onChange={handleChange}
                         required
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition"
                         placeholder="your@email.com"
                       />
                     </div>
-                    
                     <div>
                       <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
-                        Phone Number
+                        Phone Number *
                       </label>
                       <input
                         type="tel"
                         id="phone"
                         name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
+                        required
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition"
                         placeholder="+91 98765 43210"
                       />
                     </div>
                   </div>
-                  
                   <div>
                     <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
                       Message *
@@ -166,15 +184,12 @@ export default function ContactPage() {
                     <textarea
                       id="message"
                       name="message"
-                      value={formData.message}
-                      onChange={handleChange}
                       required
                       rows={6}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition resize-none"
                       placeholder="Tell us how we can help you..."
                     />
                   </div>
-                  
                   <button
                     type="submit"
                     disabled={loading}

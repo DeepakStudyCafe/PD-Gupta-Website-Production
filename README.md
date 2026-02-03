@@ -267,8 +267,8 @@ This project is created for PD Gupta & CO. All rights reserved.
 ## 🤝 Support
 
 For issues or questions:
-- Email: info@sharmaassociates.in
-- Phone: +91 80 1234 5678
+- Email: gupta.k.deepak@gmail.com
+- Phone: +91 7303082229
 
 ---
 

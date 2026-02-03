@@ -4,108 +4,162 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+import { useRef, useState } from "react";
+
 export default function career() {
+  const formRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+    setSuccess("");
+    setError("");
+
+    const form = e.target;
+    const data = {
+      formType: "career",
+      firstName: form["First Name *"]?.value?.trim() || "",
+      lastName: form["Last Name *"]?.value?.trim() || "",
+      email: form["Email *"]?.value?.trim() || "",
+      mobile: form["Mobile No *"]?.value?.trim() || "",
+      gender: form["Gender *"]?.value || "",
+      position: form["Position you are applying for"]?.value?.trim() || "",
+      dob: form["Date of Birth (DD/MM/YYYY) *"]?.value?.trim() || "",
+      qualification: form["Highest Qualification"]?.value?.trim() || "",
+      portfolio: form["Portfolio Website"]?.value?.trim() || "",
+      resume: form["Upload Resume * (Max size 1 MB)"]?.files?.[0]?.name || "",
+      lastCompany: form["Last company you worked for"]?.value?.trim() || "",
+      experienceYear: form["experienceYear"]?.value || "",
+      experienceMonth: form["experienceMonth"]?.value || "",
+      comments: form["comments"]?.value?.trim() || "",
+    };
+
+    // Basic validation (example: require name, email, mobile, resume)
+    if (!data.firstName || !data.lastName || !data.email || !data.mobile || !data.resume) {
+      setError("Please fill all required fields.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/form-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      if (res.ok) {
+        setSuccess("Application submitted successfully!");
+        form.reset();
+      } else {
+        setError(result.error || "Submission failed.");
+      }
+    } catch (err) {
+      setError("Network error. Please try again.");
+    }
+    setLoading(false);
+  }
+
   return (
     <>
-    <Navbar/>
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-100 py-2 reveal">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-4xl mx-auto"
-      >
-        <div className="bg-white/80 backdrop-blur-xl border border-green-100 shadow-xl rounded-3xl p-6 md:p-8">
-          {/* Title */}
-          <div className="text-center mb-8">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-              Apply Here
-            </h1>
-            <p className="text-sm text-gray-500 mt-1">
-              Please fill in your details carefully
-            </p>
-          </div>
-
-          <form className="space-y-8">
-            {/* Personal Details */}
-            <Section title="Personal Details">
-              <Grid>
-                <Input label="First Name *" required />
-                <Input label="Last Name *" required />
-                <Input label="Email *" type="email" required />
-                <Input label="Mobile No *" required />
-              </Grid>
-
-              <Grid>
-                <Select
-                  label="Gender *"
-                  options={["Male", "Female", "Other"]}
-                />
-                <Input label="Position you are applying for" />
-              </Grid>
-
-              <Grid>
-                <Input label="Date of Birth (DD/MM/YYYY) *" required />
-                <Input label="Highest Qualification" />
-              </Grid>
-            </Section>
-
-            {/* Professional Details */}
-            <Section title="Professional Details">
-              <Grid>
-                <Input label="Portfolio Website" placeholder="http://" />
-                <FileInput label="Upload Resume * (Max size 1 MB)" />
-              </Grid>
-
-              <Grid>
-                <Input label="Last company you worked for" />
-
-                <div>
-                  <label className="label">Years of Experience</label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <select className="input">
-                      <option>Select Year</option>
-                      {[...Array(21)].map((_, i) => (
-                        <option key={i}>{i}</option>
-                      ))}
-                    </select>
-                    <select className="input">
-                      <option>Select Month</option>
-                      {[...Array(12)].map((_, i) => (
-                        <option key={i}>{i}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </Grid>
-            </Section>
-
-            {/* Comments */}
-            <Section title="Reference / Comments / Questions">
-              <textarea
-                rows="4"
-                className="input resize-none"
-                placeholder="Write your comments here..."
-              />
-            </Section>
-
-            {/* Submit */}
-            <div className="flex justify-center pt-2">
-              <button
-                type="submit"
-                className="px-8 py-2 rounded-lg bg-green-600 text-sm text-white font-medium
-                hover:bg-green-700 hover:shadow-md active:scale-95 transition"
-              >
-                Send Application
-              </button>
+      <Navbar/>
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-100 py-2 reveal">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="bg-white/80 backdrop-blur-xl border border-green-100 shadow-xl rounded-3xl p-6 md:p-8">
+            {/* Title */}
+            <div className="text-center mb-8">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Apply Here</h1>
+              <p className="text-sm text-gray-500 mt-1">Please fill in your details carefully</p>
             </div>
-          </form>
-        </div>
-      </motion.div>
-    </div>
-    <Footer/>
+
+            {/* Success/Error messages */}
+            {success && <div className="text-green-600 text-center mb-4">{success}</div>}
+            {error && <div className="text-red-600 text-center mb-4">{error}</div>}
+
+            <form className="space-y-8" ref={formRef} onSubmit={handleSubmit} autoComplete="off">
+              {/* Personal Details */}
+              <Section title="Personal Details">
+                <Grid>
+                  <Input label="First Name *" required />
+                  <Input label="Last Name *" required />
+                  <Input label="Email *" type="email" required />
+                  <Input label="Mobile No *" required />
+                </Grid>
+
+                <Grid>
+                  <Select label="Gender *" options={["Male", "Female", "Other"]} />
+                  <Input label="Position you are applying for" />
+                </Grid>
+
+                <Grid>
+                  <Input label="Date of Birth (DD/MM/YYYY) *" required />
+                  <Input label="Highest Qualification" />
+                </Grid>
+              </Section>
+
+              {/* Professional Details */}
+              <Section title="Professional Details">
+                <Grid>
+                  <Input label="Portfolio Website" placeholder="http://" />
+                  <FileInput label="Upload Resume * (Max size 1 MB)" />
+                </Grid>
+
+                <Grid>
+                  <Input label="Last company you worked for" />
+                  <div>
+                    <label className="label">Years of Experience</label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <select className="input" name="experienceYear">
+                        <option value="">Select Year</option>
+                        {[...Array(21)].map((_, i) => (
+                          <option key={i}>{i}</option>
+                        ))}
+                      </select>
+                      <select className="input" name="experienceMonth">
+                        <option value="">Select Month</option>
+                        {[...Array(12)].map((_, i) => (
+                          <option key={i}>{i}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </Grid>
+              </Section>
+
+              {/* Comments */}
+              <Section title="Reference / Comments / Questions">
+                <textarea
+                  rows="4"
+                  className="input resize-none"
+                  placeholder="Write your comments here..."
+                  name="comments"
+                />
+              </Section>
+
+              {/* Submit */}
+              <div className="flex justify-center pt-2">
+                <button
+                  type="submit"
+                  className="px-8 py-2 rounded-lg bg-green-600 text-sm text-white font-medium hover:bg-green-700 hover:shadow-md active:scale-95 transition"
+                  disabled={loading}
+                >
+                  {loading ? "Submitting..." : "Send Application"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </motion.div>
+      </div>
+      <Footer/>
     </>
-    
   );
 }
 
@@ -138,14 +192,13 @@ function Grid({ children }) {
 function Input({ label, type = "text", required, placeholder }) {
   return (
     <div>
-      <label className="label">
-        {label}
-      </label>
+      <label className="label">{label}</label>
       <input
         type={type}
         required={required}
         placeholder={placeholder}
         className="input"
+        name={label}
       />
     </div>
   );
@@ -155,7 +208,7 @@ function Select({ label, options }) {
   return (
     <div>
       <label className="label">{label}</label>
-      <select className="input">
+      <select className="input" name={label} required>
         <option value="">Select..</option>
         {options.map((opt) => (
           <option key={opt}>{opt}</option>
@@ -169,7 +222,7 @@ function FileInput({ label }) {
   return (
     <div>
       <label className="label">{label}</label>
-      <input type="file" className="input file:bg-white file:border-0" />
+      <input type="file" className="input file:bg-white file:border-0" name={label} />
     </div>
   );
 }

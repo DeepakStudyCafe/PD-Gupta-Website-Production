@@ -6,16 +6,26 @@ import Footer from "@/components/Footer";
 import { useState } from "react";
 
 const galleryImages = [
-  { id: 1, src: "/g2.jpeg", alt: "Gallery Image 1" },
-  { id: 2, src: "/g24.jpeg", alt: "Gallery Image 2" },
+  { id: 28, src: "/g28.png", alt: "Gallery Image 28" },
+   { id: 23, src: "/g33.jpeg", alt: "Gallery Image 33" },
+  
+  { id: 38, src: "/g38.jpeg", alt: "Gallery Image 38" },
+  { id: 37, src: "/g37.jpeg", alt: "Gallery Image 37" },
   { id: 3, src: "/g4.jpeg", alt: "Gallery Image 3" },
+  
   { id: 4, src: "/g5.jpeg", alt: "Gallery Image 4" },
-  { id: 5, src: "/g6.jpeg", alt: "Gallery Image 5" },
+  
   { id: 6, src: "/g7.jpeg", alt: "Gallery Image 6" },
   { id: 7, src: "/g8.jpeg", alt: "Gallery Image 7" },
   { id: 8, src: "/g9.jpeg", alt: "Gallery Image 8" },
+    { id: 1, src: "/g2.jpeg", alt: "Gallery Image 1" },
+  
+  { id: 30, src: "/g30.jpeg", alt: "Gallery Image 30" },
+  { id: 31, src: "/g31.jpeg", alt: "Gallery Image 31" },
+  { id: 32, src: "/g32.jpeg", alt: "Gallery Image 32" },
   { id: 9, src: "/g10.jpeg", alt: "Gallery Image 9" },
   { id: 10, src: "/g11.jpeg", alt: "Gallery Image 10" },
+  { id: 5, src: "/g6.jpeg", alt: "Gallery Image 5" },
   // { id: 11, src: "/g12.jpeg", alt: "Gallery Image 11" },
   { id: 12, src: "/g13.jpeg", alt: "Gallery Image 12" },
   // { id: 13, src: "/g14.jpeg", alt: "Gallery Image 13" },
@@ -28,8 +38,14 @@ const galleryImages = [
   { id: 20, src: "/g21.jpeg", alt: "Gallery Image 20" },
   { id: 21, src: "/g22.jpeg", alt: "Gallery Image 21" },
   { id: 22, src: "/g23.jpeg", alt: "Gallery Image 22" },
-  // { id: 23, src: "/g3.jpeg", alt: "Gallery Image 23" },
-  { id: 24, src: "/g5.jpeg", alt: "Gallery Image 24" },
+ 
+  { id: 34, src: "/g34.jpeg", alt: "Gallery Image 34" },
+  { id: 35, src: "/g35.jpeg", alt: "Gallery Image 35" },
+  { id: 36, src: "/g36.jpeg", alt: "Gallery Image 36" },
+  
+  
+
+  
 ];
 
 export default function GalleryPage() {

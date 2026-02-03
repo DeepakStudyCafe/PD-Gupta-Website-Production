@@ -5,7 +5,7 @@ export const services = [
     title: "Corporate Services",
     description: "Incorporation of company. Consultancy on Company Law.",
     details: "We provide comprehensive corporate services including company registration, ROC filings, secretarial compliance, board meetings, share transfers, and advisory on corporate governance. Our experts ensure seamless compliance with the Companies Act and related regulations.",
-    img: "/cp-service.jfif",
+    img: "/cp-service.png",
   },
   {
     slug: "accounting-services",
@@ -19,7 +19,7 @@ export const services = [
     title: "Income Tax",
     description: "Consultancy on various intricate matters pertaining to Income tax.",
     details: "Expert guidance on tax planning, filing of ITRs, TDS compliance, tax assessments, appeals, advance tax calculations, and representation before tax authorities. We minimize your tax liability while ensuring full compliance.",
-    img: "/inco-servive.png",
+    img: "/inco-servive.jpg",
   },
   {
     slug: "audit-services",
