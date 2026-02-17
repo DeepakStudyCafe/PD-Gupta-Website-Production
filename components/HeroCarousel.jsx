@@ -12,7 +12,7 @@ const slides = [
       </>
     ),
     desc: "Grow your business with expert CA guidance, digital tools, and a community of 500+ happy clients.",
-    img: "/banner1.jfif",
+    img: "/hero1.jpeg",
     cta: "Register Now",
     ctaLink: "/contact",
   },
@@ -26,7 +26,7 @@ const slides = [
       </>
     ),
     desc: "Tax planning, GST, audit, and more — trusted by businesses across India.",
-    img: "/banner2.jfif",
+    img: "/hero2.jpeg",
     cta: "Book Consultation",
     ctaLink: "/contact",
   },
@@ -38,7 +38,7 @@ const slides = [
       </>
     ),
     desc: "Join our community and experience the difference with PD Gupta & CO.",
-    img: "/banner3.jfif",
+    img: "/hero3.jpeg",
     cta: "Get Started",
     ctaLink: "/contact",
   },
@@ -123,11 +123,11 @@ export default function HeroCarousel() {
         <img
           src={slides[current].img}
           alt="Hero Background"
-          className="absolute inset-0 w-full h-full object-cover object-center blur-[5px] scale-105 z-0 transition-all duration-700"
-          style={{ minHeight: '80vh', minWidth: '100vw', filter: 'blur(5px) brightness(0.8) saturate(1.1)' }}
+          className="absolute inset-0 w-full h-full object-cover object-center  scale-105 z-0 transition-all duration-700"
+          style={{ minHeight: '80vh', minWidth: '100vw', filter: '' }}
         />
         {/* Blue Overlay for tint */}
-        <div className="absolute inset-0 z-10" style={{background: 'linear-gradient(120deg, rgba(30,64,175,0.35) 0%, rgba(59,130,246,0.25) 100%)'}} />
+        <div className="absolute inset-0 z-10 bg-black bg-opacity-30" />
         {/* Centered Content */}
         <div className="relative z-20 flex flex-col items-center justify-center w-full h-full min-h-[80vh] px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight text-blue-50 drop-shadow-lg">
