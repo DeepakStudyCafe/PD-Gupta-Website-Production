@@ -8,7 +8,7 @@ const slides = [
     title: (
       <>
         Lessons and insights <br />
-        <span className="text-primary-900 font-extrabold">from 8 years</span>
+        <span className="text-green-600 font-extrabold">from 8 years</span>
       </>
     ),
     desc: "Grow your business with expert CA guidance, digital tools, and a community of 500+ happy clients.",
@@ -20,7 +20,7 @@ const slides = [
     title: (
       <>
         Expert CA Services <br />
-        <span className="text-primary-900 font-extrabold">
+        <span className="text-green-600 font-extrabold">
           for your growth
         </span>
       </>
@@ -34,11 +34,11 @@ const slides = [
     title: (
       <>
         500+ Happy Clients <br />
-        <span className="text-primary-900 font-extrabold">across India</span>
+        <span className="text-green-600 font-extrabold">across India</span>
       </>
     ),
     desc: "Join our community and experience the difference with PD Gupta & CO.",
-    img: "/hero3.jpeg",
+    img: "/hero3.jpg",
     cta: "Get Started",
     ctaLink: "/contact",
   },
