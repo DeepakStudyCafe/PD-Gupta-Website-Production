@@ -118,7 +118,8 @@
 /* The inner list is duplicated in JS so at -50% the    */
 /* animation loops seamlessly back to 0.                */
 .animate-ticker-scroll {
-  animation: tickerScroll 30s linear infinite;
+  /* slower scroll for readability */
+  animation: tickerScroll 90s linear infinite;
 }
 
 @keyframes tickerScroll {
