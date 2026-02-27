@@ -5,8 +5,9 @@
 //  - continuous upward auto-scroll (pause on hover / focus)
 //  - live search filter with clear button
 //  - Prev / Pause-Play / Next controls
+//  - client-side refresh on mount so brand-new WP posts show immediately
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { LuBellRing } from "react-icons/lu";
 
@@ -81,7 +82,7 @@ function TickerRow({ item }: { item: TickerItem }) {
 // ── Main Component ────────────────────────────────────────────────────────────
 
 export default function UpdatesTicker({
-  items,
+  items: initialItems,
   className = "",
 }: UpdatesTickerProps) {
   const innerRef = useRef<HTMLDivElement>(null);
@@ -90,25 +91,57 @@ export default function UpdatesTicker({
   const [page, setPage] = useState(0);
   const [hovered, setHovered] = useState(false);
 
+  // Live items state — starts with SSR data, updated on mount with fresh WP data
+  const [items, setItems] = useState<TickerItem[]>(initialItems);
+  const [loading, setLoading] = useState(false);
+
+  // ── Client-side refresh ───────────────────────────────────────────────────
+  // Fetch fresh posts every time the component mounts (and every 60 s after).
+  const refresh = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/latest-updates", { cache: "no-store" });
+      if (res.ok) {
+        const fresh: TickerItem[] = await res.json();
+        if (fresh.length > 0) setItems(fresh);
+      }
+    } catch {
+      // silently keep existing items on error
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    refresh(); // immediate refresh on mount
+    const id = setInterval(refresh, 60_000); // then every 60 s
+    return () => clearInterval(id);
+  }, [refresh]);
+
   // ── Derived values ────────────────────────────────────────────────────────
+
+  // Always display newest first regardless of prop order
+  const sortedItems = [...items].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
 
   const query = search.trim().toLowerCase();
   const isSearching = query !== "";
 
   const filtered = isSearching
-    ? items.filter(
+    ? sortedItems.filter(
         (item) =>
           decodeEntities(item.title).toLowerCase().includes(query) ||
           formatDate(item.date).toLowerCase().includes(query)
       )
-    : items;
+    : sortedItems;
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages - 1);
   const paginated = filtered.slice(safePage * PAGE_SIZE, (safePage + 1) * PAGE_SIZE);
 
   // Duplicate for seamless CSS loop in auto-scroll mode
-  const scrollItems = [...items, ...items];
+  const scrollItems = [...sortedItems, ...sortedItems];
 
   const shouldPause = !isPlaying || hovered || isSearching;
 
@@ -143,14 +176,19 @@ export default function UpdatesTicker({
           <LuBellRing className="w-5 h-5 mr-4 text-[#61DAFB]" aria-hidden="true" />
           Latest Updates
         </span>
-        <span className="bg-blue-500/40 text-blue-100 text-xs px-2 py-0.5 rounded-full font-medium">
-          Live
-        </span>
+        <div className="flex items-center gap-2">
+          {loading && (
+            <span className="w-3 h-3 rounded-full border-2 border-blue-300 border-t-white animate-spin inline-block" title="Refreshing…" />
+          )}
+          <span className="bg-blue-500/40 text-blue-100 text-xs px-2 py-0.5 rounded-full font-medium">
+            Live
+          </span>
+        </div>
       </div>
 
       {/* ── Scroll / paginated area ────────────────────────────────────────── */}
       <div
-        className="relative overflow-hidden bg-blue-50/20 pb-20"
+        className={`relative bg-blue-50/20 pb-20 ${isSearching ? "overflow-y-auto" : "overflow-hidden"}`}
         style={{ height: "20rem" }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -168,7 +206,7 @@ export default function UpdatesTicker({
           </p>
         ) : isSearching ? (
           /* search results — static, paginated */
-          <div className="px-4 py-4 space-y-4 h-full overflow-y-auto">
+          <div className="px-4 py-4 space-y-4">
             {paginated.length === 0 ? (
               <p className="text-center text-gray-400 text-sm mt-16">
                 No results found.
@@ -214,6 +252,15 @@ export default function UpdatesTicker({
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onPaste={(e) => {
+                // Explicitly capture pasted text so it always triggers a search,
+                // even in browsers where onChange may lag behind paste events.
+                const pasted = e.clipboardData?.getData("text") ?? "";
+                if (pasted) {
+                  e.preventDefault();
+                  setSearch(pasted);
+                }
+              }}
               placeholder="Search updates…"
               aria-label="Search updates"
               className="w-full pl-9 pr-8 py-2.5 text-sm rounded-lg border border-gray-200 bg-gray-50

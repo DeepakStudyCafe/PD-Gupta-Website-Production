@@ -41,7 +41,7 @@ export const MONITORED_SITES: string[] = [
   // "https://site6.example.com",
 ];
 
-const DEFAULT_PER_PAGE = 10;
+const DEFAULT_PER_PAGE = 50;
 
 // ── Internal helpers ─────────────────────────────────────────────────────────
 
@@ -53,7 +53,7 @@ async function fetchPostsFromSite(
   const url = `${siteBase}/wp-json/wp/v2/posts?_embed&per_page=${perPage}&orderby=date&order=desc`;
   try {
     const res = await fetch(url, {
-      next: { revalidate: 60 },
+      next: { revalidate: 30 }, // revalidate every 30 s for fresher posts
     });
     if (!res.ok) return [];
     return (await res.json()) as WPPost[];

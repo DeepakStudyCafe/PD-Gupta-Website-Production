@@ -2,40 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-const whatsNew = [
-  {
-    date: "08-01-2026",
-    text: "Negative GST ledger balances may block GSTR-3B filing from January 2026",
-  },
-  {
-    date: "07-01-2026",
-    text: "RBI: Over 98.41% of ₹2000 notes returned; small savings rates unchanged for Jan-Mar 2026",
-  },
-  {
-    date: "06-01-2026",
-    text: "New Income Tax Act 2025 provisions to take effect from 1 April 2026",
-  },
-  {
-    date: "05-01-2026",
-    text: "RSP-based GST valuation for Pan Masala, Tobacco & Cigarettes w.e.f. 1 Feb 2026",
-  },
-  {
-    date: "04-01-2026",
-    text: "No belated/revised ITR for FY 2024-25 after 31 Dec 2025; only ITR-U option",
-  },
-  {
-    date: "03-01-2026",
-    text: "Add bank details in GST registration to avoid automatic suspension",
-  },
-  {
-    date: "02-01-2026",
-    text: "PAN-Aadhaar linking mandatory to avoid higher TDS from Jan 2026",
-  },
-  {
-    date: "01-01-2026",
-    text: "MCA extends annual filings deadline to 31 January 2026 without additional fees",
-  },
-];
+
 
 export default function WhatsNewSidebar() {
   const [isPlaying, setIsPlaying] = useState(true);

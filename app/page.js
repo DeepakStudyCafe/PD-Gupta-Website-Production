@@ -15,7 +15,7 @@ import { getPostsForSites } from "@/lib/api";
 import Image from "next/image";
 import GalleryPreview from "@/components/GalleryPreview";
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 export const metadata = {
   title: "Home - PD Gupta & CO | Chartered Accountants",
@@ -53,7 +53,7 @@ export default async function Home() {
 
   // Fetch latest WP posts from monitored sites for the ticker widget.
   // Errors are handled inside getPostsForSites — falls back to [].
-  const tickerRaw = await getPostsForSites(undefined, 15);
+  const tickerRaw = await getPostsForSites(undefined, 50);
   const tickerItems = tickerRaw.map((p) => ({
     id: p.id,
     slug: p.slug,
@@ -83,7 +83,7 @@ export default async function Home() {
           <UpdatesTicker items={tickerItems} />
         </div>
       </div>
-      
+
       <section className="max-w-6xl mx-auto grid md:grid-cols-2 items-center p-8 my-8 reveal">
         <div className="flex ">
           <img
