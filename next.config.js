@@ -1,7 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['firebasestorage.googleapis.com', 'images.unsplash.com', 'media.licdn.com'],
+    domains: [
+      'firebasestorage.googleapis.com',
+      'images.unsplash.com',
+      'media.licdn.com',
+      'studycafe.in',
+      'www.studycafe.in',
+      // Add more monitored-site domains as you configure them
+    ],
   },
   reactStrictMode: true,
   

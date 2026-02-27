@@ -10,6 +10,8 @@ import dynamic from "next/dynamic";
 import HeroCarousel from "@/components/HeroCarousel";
 import WhatsNewSidebar from "@/components/WhatsNewSidebar";
 import ServicesSection from "@/components/ServicesSection";
+import UpdatesTicker from "@/components/UpdatesTicker";
+import { getPostsForSites } from "@/lib/api";
 import Image from "next/image";
 import GalleryPreview from "@/components/GalleryPreview";
 
@@ -49,10 +51,39 @@ export default async function Home() {
   const homeContent = await getHomeContent();
   const testimonials = await getTestimonials();
 
+  // Fetch latest WP posts from monitored sites for the ticker widget.
+  // Errors are handled inside getPostsForSites — falls back to [].
+  const tickerRaw = await getPostsForSites(undefined, 15);
+  const tickerItems = tickerRaw.map((p) => ({
+    id: p.id,
+    slug: p.slug,
+    title: p.title,
+    date: p.date,
+  }));
+
   return (
     <main>
       <Navbar />
       <HeroCarousel />
+
+
+      <div className="container mx-auto px-4 py-8 reveal">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-2">
+          Our Services
+        </h2>
+        <p className="text-gray-400 text-sm mb-12 text-center">
+          We provide reliable, scalable, and high-quality solutions tailored to
+          your needs.
+        </p>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className="lg:col-span-3">
+            <ServicesSection />
+          </div>
+          {/* UpdatesTicker replaces the static WhatsNewSidebar with live WP data */}
+          <UpdatesTicker items={tickerItems} />
+        </div>
+      </div>
+      
       <section className="max-w-6xl mx-auto grid md:grid-cols-2 items-center p-8 my-8 reveal">
         <div className="flex ">
           <img
@@ -80,21 +111,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-8 reveal">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-2">
-          Our Services
-        </h2>
-        <p className="text-gray-400 text-sm mb-12 text-center">
-          We provide reliable, scalable, and high-quality solutions tailored to
-          your needs.
-        </p>
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <div className="lg:col-span-3">
-            <ServicesSection />
-          </div>
-          <WhatsNewSidebar />
-        </div>
-      </div>
+      
 
       <section className="py-12 bg-white overflow-hidden reveal">
         {/* <div className="max-w-4xl mx-auto text-center px-4">
