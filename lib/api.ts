@@ -53,7 +53,7 @@ async function fetchPostsFromSite(
   const url = `${siteBase}/wp-json/wp/v2/posts?_embed&per_page=${perPage}&orderby=date&order=desc`;
   try {
     const res = await fetch(url, {
-      next: { revalidate: 30 }, // revalidate every 30 s for fresher posts
+      next: { revalidate: 86400 }, // revalidate once per day — WordPress posts don't change that frequently
     });
     if (!res.ok) return [];
     return (await res.json()) as WPPost[];
@@ -129,8 +129,7 @@ export async function getPostBySlug(slug: string): Promise<WPPost | null> {
   for (const site of MONITORED_SITES) {
     try {
       const url = `${site}/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed`;
-      const res = await fetch(url, { next: { revalidate: 60 } });
-      if (!res.ok) continue;
+      const res = await fetch(url, { next: { revalidate: 86400 } }); // posts don't change after publish
       const posts: WPPost[] = await res.json();
       if (posts.length > 0) return posts[0];
     } catch {
@@ -150,7 +149,7 @@ export async function getPostById(
 ): Promise<WPPost | null> {
   try {
     const url = `${siteBase}/wp-json/wp/v2/posts/${id}?_embed`;
-    const res = await fetch(url, { next: { revalidate: 60 } });
+    const res = await fetch(url, { next: { revalidate: 86400 } }); // posts don't change after publish
     if (!res.ok) return null;
     return (await res.json()) as WPPost;
   } catch {

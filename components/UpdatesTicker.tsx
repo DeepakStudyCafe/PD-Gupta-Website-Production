@@ -1,23 +1,16 @@
 "use client";
 
-// components/UpdatesTicker.tsx
-// Latest Updates sidebar widget with:
-//  - continuous upward auto-scroll (pause on hover / focus)
-//  - live search filter with clear button
-//  - Prev / Pause-Play / Next controls
-//  - client-side refresh on mount so brand-new WP posts show immediately
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { LuBellRing } from "react-icons/lu";
 
-// ── Types ────────────────────────────────────────────────────────────────────
 
 export interface TickerItem {
   id: number;
   slug: string;
-  title: string; // may contain WP HTML entities
-  date: string;  // ISO 8601
+  title: string; 
+  date: string;  
 }
 
 interface UpdatesTickerProps {
@@ -25,11 +18,8 @@ interface UpdatesTickerProps {
   className?: string;
 }
 
-// ── Constants ─────────────────────────────────────────────────────────────────
 
-const PAGE_SIZE = 5; // items per page in search / manual browse mode
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
+const PAGE_SIZE = 5; 
 
 function formatDate(iso: string): string {
   try {
@@ -91,32 +81,8 @@ export default function UpdatesTicker({
   const [page, setPage] = useState(0);
   const [hovered, setHovered] = useState(false);
 
-  // Live items state — starts with SSR data, updated on mount with fresh WP data
+  // Live items state — starts with SSR data passed from the server.
   const [items, setItems] = useState<TickerItem[]>(initialItems);
-  const [loading, setLoading] = useState(false);
-
-  // ── Client-side refresh ───────────────────────────────────────────────────
-  // Fetch fresh posts every time the component mounts (and every 60 s after).
-  const refresh = useCallback(async () => {
-    try {
-      setLoading(true);
-      const res = await fetch("/api/latest-updates", { cache: "no-store" });
-      if (res.ok) {
-        const fresh: TickerItem[] = await res.json();
-        if (fresh.length > 0) setItems(fresh);
-      }
-    } catch {
-      // silently keep existing items on error
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    refresh(); // immediate refresh on mount
-    const id = setInterval(refresh, 60_000); // then every 60 s
-    return () => clearInterval(id);
-  }, [refresh]);
 
   // ── Derived values ────────────────────────────────────────────────────────
 
@@ -177,9 +143,6 @@ export default function UpdatesTicker({
           Latest Updates
         </span>
         <div className="flex items-center gap-2">
-          {loading && (
-            <span className="w-3 h-3 rounded-full border-2 border-blue-300 border-t-white animate-spin inline-block" title="Refreshing…" />
-          )}
           <span className="bg-blue-500/40 text-blue-100 text-xs px-2 py-0.5 rounded-full font-medium">
             Live
           </span>
