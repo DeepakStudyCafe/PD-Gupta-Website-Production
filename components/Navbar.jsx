@@ -96,7 +96,7 @@ export default function Navbar() {
                     className="w-full h-full object-contain"
                   />
                 </div>
-              <div className="hidden sm:block">
+              <div className="block">
                 <h1 className="text-xl font-bold text-primary-900">
                   PD Gupta & CO
                 </h1>
