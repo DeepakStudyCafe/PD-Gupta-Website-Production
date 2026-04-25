@@ -37,6 +37,10 @@ export async function generateMetadata({
       title: post.title.rendered.replace(/<[^>]+>/g, ""),
       description,
     },
+    robots: {
+      index: false,
+      follow: true,
+    },
   };
 }
 
